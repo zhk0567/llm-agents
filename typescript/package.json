@@ -1,0 +1,11 @@
+{
+  "name": "llm-agents-typescript",
+  "private": true,
+  "workspaces": [
+    "langgraph-js",
+    "openai-agents"
+  ],
+  "scripts": {
+    "install:all": "npm install"
+  }
+}

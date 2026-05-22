@@ -1,0 +1,34 @@
+# Ollama / model artifacts
+models/**
+
+# Python
+python/.venv/
+**/__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# Node
+typescript/node_modules/
+**/dist/
+*.tsbuildinfo
+
+# .NET
+dotnet/**/bin/
+dotnet/**/obj/
+dotnet/packages/
+
+# Java
+java/.m2/
+java/**/target/
+
+# Env & logs
+.env
+docs/smoke-log.txt
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.swp

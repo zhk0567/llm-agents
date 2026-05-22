@@ -1,0 +1,37 @@
+[project]
+name = "llm-agents-python"
+version = "0.1.0"
+description = "Multi-framework AI agent demos with local Ollama"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+langgraph = ["langchain-core>=0.3.0", "langchain-ollama>=0.2.0", "langgraph>=0.2.0"]
+crewai = ["crewai>=0.80.0"]
+llamaindex = ["llama-index>=0.12.0", "llama-index-llms-ollama>=0.4.0"]
+pydantic = ["pydantic-ai>=0.0.14", "openai>=1.50.0"]
+ag2 = ["pyautogen>=0.7.0", "autogen-ext[openai]>=0.4.0"]
+smolagents = ["smolagents[litellm]>=1.0.0"]
+maf = ["semantic-kernel>=1.20.0", "openai>=1.50.0"]
+all = [
+    "langchain-core>=0.3.0",
+    "langchain-ollama>=0.2.0",
+    "langgraph>=0.2.0",
+    "crewai>=0.80.0",
+    "llama-index>=0.12.0",
+    "llama-index-llms-ollama>=0.4.0",
+    "pydantic-ai>=0.0.14",
+    "openai>=1.50.0",
+    "pyautogen>=0.7.0",
+    "autogen-ext[openai]>=0.4.0",
+    "smolagents[litellm]>=1.0.0",
+    "semantic-kernel>=1.20.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["llm_agents_common*"]
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
