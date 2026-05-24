@@ -9,7 +9,7 @@
 |----|-----|
 | OS | Windows |
 | LLM | Ollama（本地） |
-| 默认模型 | `config/ollama.json` → `qwen2.5:7b` |
+| 默认模型 | `config/ollama.json` → 本机已安装模型（如 `nemotron-3-super:cloud`） |
 | 检索 | mock `search_topic`（`USE_MOCK_SEARCH=1`） |
 
 ## 2. 横向对比（摘要）
@@ -44,7 +44,7 @@
 
 1. 先 `setup-ollama.ps1`，模型落在 `./models/ollama`
 2. 无默认模型时用 `$env:OLLAMA_MODEL=已有模型`
-3. 小模型 tool call 不稳定时优先 `qwen2.5:7b` / `llama3.1:8b`
+3. 使用 `ollama list` 已有模型；修改 `config/ollama.json` 或 `$env:OLLAMA_MODEL`
 
 ## 5. 复现
 

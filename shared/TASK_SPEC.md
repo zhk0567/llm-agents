@@ -25,7 +25,7 @@
 
 ## 模型
 
-- 默认：`config/ollama.json` 中的 `default_model`（`qwen2.5:7b`）
+- 默认：`config/ollama.json` 中的 `default_model`（当前：`nemotron-3-super:cloud`，须为本机已安装模型）
 - 连接：`http://127.0.0.1:11434/v1`，OpenAI 兼容模式
 
 ## 扩展：ResearchCrew（多 Agent）

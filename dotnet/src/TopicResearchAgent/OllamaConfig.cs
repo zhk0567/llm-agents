@@ -7,7 +7,7 @@ public sealed class OllamaConfig
     public string Host { get; init; } = "http://127.0.0.1:11434";
     public string BaseUrl { get; init; } = "http://127.0.0.1:11434/v1";
     public string ApiKey { get; init; } = "ollama";
-    public string DefaultModel { get; init; } = "qwen2.5:7b";
+    public string DefaultModel { get; init; } = "nemotron-3-super:cloud";
 
     public static OllamaConfig Load(string projectRoot)
     {

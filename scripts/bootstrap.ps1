@@ -55,6 +55,6 @@ Write-Host "`n=== Done ===" -ForegroundColor Cyan
 if (-not $hasOllama) {
     Write-Host "Install Ollama: https://ollama.com/download"
 } else {
-    Write-Host "Next: ollama serve  (then .\scripts\pull-models.ps1)"
+    Write-Host "Next: ollama serve  (then .\scripts\check-ollama.ps1)"
 }
 Write-Host "Run smoke: .\scripts\run-all-smoke.ps1"

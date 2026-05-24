@@ -30,9 +30,9 @@ mvn -Dmaven.repo.local=..\.m2\repository -q exec:java "-Dexec.args=测试主题"
 
 ```powershell
 . .\scripts\setup-ollama.ps1
-.\scripts\pull-models.ps1
-# 或使用已有模型：
-.\scripts\run-smoke-live.ps1 -Model nemotron-3-super:cloud
+.\scripts\pull-models.ps1          # 仅检查，不下载
+# 真机 smoke：
+.\scripts\run-smoke-live.ps1
 ```
 
 ## 一键检查

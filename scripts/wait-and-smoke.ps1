@@ -1,26 +1,27 @@
-# Wait for Ollama model then run live smoke
+# Run live smoke with installed model only (no ollama pull)
 param(
-    [string]$Model = "qwen2.5:7b",
-    [int]$TimeoutMinutes = 60
+    [string]$Model = "",
+    [string]$Topic = "AI Agent 框架选型"
 )
 
 $ErrorActionPreference = "Stop"
-$ProjectRoot = Split-Path -Parent $PSScriptRoot
-. (Join-Path $PSScriptRoot "setup-ollama.ps1")
-
-Write-Host "Pulling $Model (if missing)..."
-ollama pull $Model 2>&1 | Out-File (Join-Path $ProjectRoot "docs\pull-$($Model -replace '[:.]','-').log") -Encoding utf8
-
-$deadline = (Get-Date).AddMinutes($TimeoutMinutes)
-while ((Get-Date) -lt $deadline) {
-    $list = ollama list 2>$null | Out-String
-    if ($list -match [regex]::Escape($Model.Split(':')[0])) {
-        Write-Host "Model available: $Model"
-        & (Join-Path $PSScriptRoot "run-smoke-live.ps1") -Model $Model
-        & (Join-Path $PSScriptRoot "update-matrix-from-smoke.ps1")
-        exit 0
-    }
-    Start-Sleep -Seconds 15
+$configPath = Join-Path (Split-Path -Parent $PSScriptRoot) "config\ollama.json"
+if (-not $Model -and (Test-Path $configPath)) {
+    $Model = (Get-Content $configPath -Raw | ConvertFrom-Json).default_model
 }
-Write-Host "Timeout waiting for $Model"
-exit 1
+
+if (-not $Model) {
+    Write-Host "Specify -Model or set config/ollama.json default_model"
+    exit 1
+}
+
+$list = ollama list 2>$null | Out-String
+if ($list -notmatch [regex]::Escape($Model.Split(':')[0])) {
+    Write-Host "Model '$Model' not installed. Available:"
+    ollama list
+    exit 1
+}
+
+Write-Host "Smoke with installed model: $Model"
+& (Join-Path $PSScriptRoot "run-smoke-live.ps1") -Model $Model -Topic $Topic
+& (Join-Path $PSScriptRoot "update-matrix-from-smoke.ps1")

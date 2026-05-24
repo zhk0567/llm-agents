@@ -7,7 +7,7 @@
 | `host` | Ollama HTTP 地址（无 `/v1`） |
 | `base_url` | OpenAI 兼容端点 |
 | `default_model` | 默认聊天模型 |
-| `fallback_model` | `pull-models.ps1` 备选拉取 |
+| `fallback_model` | 仅 `-Download` 时可选拉取（默认可留空） |
 
 环境变量覆盖：`OLLAMA_MODEL` 优先于 `default_model`。
 

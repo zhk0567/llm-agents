@@ -16,20 +16,25 @@ cd f:\commercial\llm-agents
 # 一键初始化（venv、npm、依赖）
 .\scripts\bootstrap.ps1
 
-# 将 Ollama 模型目录指向本项目
+# 将 Ollama 模型目录指向本项目（可选，已有模型可不拉取）
 . .\scripts\setup-ollama.ps1
 
-# 拉取默认模型（见 config/ollama.json）
-.\scripts\pull-models.ps1
-
-# 启动 Ollama（另开终端，先 dot-source setup）
+# 启动 Ollama（另开终端）
 ollama serve
+
+# 检查本机已安装模型（不下载）
+.\scripts\pull-models.ps1
 
 # 检查连通性与默认模型
 .\scripts\check-ollama.ps1
 ```
 
-若本机已有其他模型，可临时指定：`$env:OLLAMA_MODEL = "你的模型名"`
+默认模型见 [`config/ollama.json`](config/ollama.json)（当前：`nemotron-3-super:cloud`）。**不会自动下载**，请使用 `ollama list` 中已有的聊天模型。
+
+```powershell
+# 真机 smoke（使用已安装模型）
+.\scripts\run-smoke-live.ps1
+# 或指定：.\scripts\run-smoke-live.ps1 -Model nemotron-3-super:cloud
 
 ## Python 环境
 

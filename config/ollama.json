@@ -2,7 +2,7 @@
   "host": "http://127.0.0.1:11434",
   "base_url": "http://127.0.0.1:11434/v1",
   "api_key": "ollama",
-  "default_model": "qwen2.5:7b",
-  "fallback_model": "llama3.2",
-  "notes": "Override with OLLAMA_MODEL env; run scripts/run-smoke-live.ps1 to auto-pick installed model"
+  "default_model": "nemotron-3-super:cloud",
+  "fallback_model": "",
+  "notes": "Use installed models only. Override: OLLAMA_MODEL env or run-smoke-live.ps1 -Model <name>"
 }

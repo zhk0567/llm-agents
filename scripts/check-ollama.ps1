@@ -1,4 +1,4 @@
-# Check Ollama connectivity and default model
+# Check Ollama connectivity and default model (no download)
 $ErrorActionPreference = "Continue"
 $ProjectRoot = Split-Path -Parent $PSScriptRoot
 . (Join-Path $PSScriptRoot "setup-ollama.ps1")
@@ -11,15 +11,16 @@ try {
     Write-Host "Ollama: running at $hostUrl" -ForegroundColor Green
     $models = @($resp.models | ForEach-Object { $_.name })
     if ($models) {
-        Write-Host "Models: $($models -join ', ')"
+        Write-Host "Installed: $($models -join ', ')"
     } else {
-        Write-Host "No models pulled yet. Run: .\scripts\pull-models.ps1" -ForegroundColor Yellow
+        Write-Host "No models listed." -ForegroundColor Yellow
     }
-    if ($models -contains $cfg.default_model -or ($models | Where-Object { $_ -like "$($cfg.default_model)*" })) {
-        Write-Host "Default model '$($cfg.default_model)' is available." -ForegroundColor Green
+    $match = $models | Where-Object { $_ -eq $cfg.default_model -or $_ -like "$($cfg.default_model)*" }
+    if ($match) {
+        Write-Host "Default '$($cfg.default_model)' is ready." -ForegroundColor Green
         exit 0
     }
-    Write-Host "Default model '$($cfg.default_model)' not found." -ForegroundColor Yellow
+    Write-Host "Default '$($cfg.default_model)' not found — pick one from list or edit config/ollama.json" -ForegroundColor Yellow
     exit 1
 } catch {
     Write-Host "Ollama: not reachable ($hostUrl)" -ForegroundColor Red

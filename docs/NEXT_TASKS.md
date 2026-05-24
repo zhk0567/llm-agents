@@ -1,22 +1,18 @@
 # 后续任务清单
 
-## 已完成
+## 模型策略
 
-- Sprint A/B、P1–P3、Haystack/DSPy/HITL、TS 真连
-- smoke-live + 矩阵实测（nemotron-3-super:cloud）
-- Google ADK Java demo（mock fallback 无 GOOGLE_API_KEY）
-- install-toolchain.ps1、wait-and-smoke.ps1
-
-## 待办（需本机）
-
-- [ ] `qwen2.5:7b` 拉取完成：`.\scripts\wait-and-smoke.ps1` 或 `pull-models.ps1`
-- [ ] `install-toolchain.ps1` → `verify-toolchain.ps1` 全绿
-- [ ] ADK + Gemini：设置 `GOOGLE_API_KEY` 后重跑 `java/google-adk`
-
-## 常用命令
+**不自动下载**。默认使用 [`config/ollama.json`](../config/ollama.json) 中的 `nemotron-3-super:cloud`（与本机 `ollama list` 一致）。
 
 ```powershell
-.\scripts\install-toolchain.ps1 -WhatIf
-.\scripts\run-smoke-live.ps1 -Model nemotron-3-super:cloud
-.\scripts\wait-and-smoke.ps1 -Model qwen2.5:7b
+ollama list
+.\scripts\check-ollama.ps1
+.\scripts\run-smoke-live.ps1
 ```
+
+仅当需要新模型时：`.\scripts\pull-models.ps1 -Download`
+
+## 待办
+
+- [ ] `install-toolchain.ps1` → dotnet / Maven smoke
+- [ ] ADK + `GOOGLE_API_KEY`（可选）
