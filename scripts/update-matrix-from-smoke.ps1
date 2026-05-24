@@ -1,4 +1,4 @@
-# Parse docs/smoke-log.txt into docs/benchmarks.md and patch FRAMEWORK_MATRIX.md
+# Parse docs/smoke-log.md table rows into benchmarks.md (last column = 实测备注 only in manual matrix)
 $ErrorActionPreference = "Stop"
 $ProjectRoot = Split-Path -Parent $PSScriptRoot
 $Log = Join-Path $ProjectRoot "docs\smoke-log.txt"
@@ -62,7 +62,8 @@ $content = Get-Content $Matrix -Raw -Encoding UTF8
 foreach ($name in $matrixNotes.Keys) {
     $note = $matrixNotes[$name]
     $esc = [regex]::Escape($name)
-    $content = $content -replace "(\|\s*$esc\s*\|[^\|]*\|[^\|]*\|[^\|]*\|[^\|]*\|[^\|]*\|[^\|]*\|[^\|]*\|)[^\|]*(\|)", "`${1}$note`${2}"
+    # Replace only the last column (实测备注) before trailing pipe+newline
+    $content = $content -replace "(\|\s*$esc\s*(?:\|[^|\r\n]+){8}\|)\s*[^|\r\n]*(\s*\|)", "`${1} $note `${2}"
 }
-$content | Set-Content $Matrix -Encoding utf8 -NoNewline
-Write-Host "Updated benchmarks + matrix from smoke-log"
+$content | Set-Content $Matrix -Encoding utf8
+Write-Host "Updated benchmarks + matrix notes from smoke-log"

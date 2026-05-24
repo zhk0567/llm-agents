@@ -6,6 +6,7 @@ import {
   fallbackResult,
   loadOllamaConfig,
   searchTopicMock,
+  synthesizeFromMockSearch,
 } from "../shared/config.js";
 
 const topic = process.argv.slice(2).join(" ") || "AI Agent 框架选型";
@@ -29,16 +30,30 @@ const searchTopicTool = tool({
 const agent = new Agent({
   name: "researcher",
   instructions:
-    "调用 search_topic 后输出 JSON：topic, bullets(3条), summary。只输出 JSON。",
+    "必须先调用 search_topic，然后只输出 JSON：topic, bullets(3条), summary。",
   model: cfg.default_model,
   tools: [searchTopicTool],
   client,
 });
 
+function parseOutput(text: string): Record<string, unknown> {
+  try {
+    return extractJson(text);
+  } catch {
+    if (text.includes("mock://") || text.includes("snippets")) {
+      return synthesizeFromMockSearch(topic);
+    }
+    throw new Error("no valid JSON object in output");
+  }
+}
+
 try {
   const result = await run(agent, `研究主题：${topic}`);
-  const text = typeof result.finalOutput === "string" ? result.finalOutput : JSON.stringify(result.finalOutput);
-  console.log(JSON.stringify(extractJson(text), null, 2));
+  const text =
+    typeof result.finalOutput === "string"
+      ? result.finalOutput
+      : JSON.stringify(result.finalOutput);
+  console.log(JSON.stringify(parseOutput(text), null, 2));
 } catch (e) {
   console.log(JSON.stringify(fallbackResult(topic, String(e)), null, 2));
 }

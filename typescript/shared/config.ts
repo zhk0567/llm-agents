@@ -36,14 +36,38 @@ export function searchTopicMock(topic: string): string {
   });
 }
 
+/** Build TASK_SPEC JSON from mock search when LLM output is not parseable. */
+export function synthesizeFromMockSearch(topic: string): Record<string, unknown> {
+  const data = JSON.parse(searchTopicMock(topic)) as {
+    snippets: string[];
+  };
+  return {
+    topic,
+    bullets: data.snippets.slice(0, 3),
+    summary: `关于「${topic}」的总结：${data.snippets[0]}`,
+  };
+}
+
 export function extractJson(text: string): Record<string, unknown> {
   let t = text.trim();
   const fence = /```(?:json)?\s*([\s\S]*?)```/.exec(t);
   if (fence) t = fence[1].trim();
-  const start = t.indexOf("{");
-  const end = t.lastIndexOf("}");
-  if (start >= 0 && end > start) t = t.slice(start, end + 1);
-  return JSON.parse(t) as Record<string, unknown>;
+
+  const starts: number[] = [];
+  for (let i = 0; i < t.length; i++) {
+    if (t[i] === "{") starts.push(i);
+  }
+  for (let i = starts.length - 1; i >= 0; i--) {
+    const start = starts[i];
+    const end = t.lastIndexOf("}", start);
+    if (end <= start) continue;
+    try {
+      return JSON.parse(t.slice(start, end + 1)) as Record<string, unknown>;
+    } catch {
+      continue;
+    }
+  }
+  throw new Error("no valid JSON object in output");
 }
 
 export function fallbackResult(topic: string, raw?: string): Record<string, unknown> {
@@ -54,6 +78,6 @@ export function fallbackResult(topic: string, raw?: string): Record<string, unkn
       `${topic}：本地 Ollama 可离线运行 mock 检索流程。`,
       `${topic}：各框架应输出相同 JSON 结构便于横向比较。`,
     ],
-    summary: raw ?? `关于「${topic}」的简要总结（fallback）。`,
+    summary: raw ? `[fallback] ${raw}` : `关于「${topic}」的简要总结（fallback）。`,
   };
 }

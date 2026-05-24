@@ -121,7 +121,9 @@ if (Test-Path (Join-Path $TsRoot "node_modules")) {
         if (Test-Path (Join-Path $pkgDir "package.json")) {
             Invoke-Smoke "typescript/$pkg" {
                 Push-Location $pkgDir
-                try { npm run start -- $Topic 2>$null } finally { Pop-Location }
+                try {
+                    npx --yes tsx main.ts $Topic 2>$null
+                } finally { Pop-Location }
             }
         }
     }

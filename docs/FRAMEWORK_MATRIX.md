@@ -13,8 +13,8 @@
 | AG2 | Python | 对话多 Agent | 是 | 是 | 会话 | 基础 | 中 | 研究式对话协作 | 9881ms fb=no |
 | Smolagents | Python | Code Agent | 是 | 有限 | 无 | HF | 低 | 轻量 HF 生态 | 25553ms fb=no |
 | MAF (Python) | Python | 企业 Agent | 是 | 是 | 依 SDK | Azure | 中 | Microsoft 生态 | 8464ms fb=no |
-| LangGraph.js | TypeScript | 状态图 | 是 | 是 | 依运行时 | LangSmith | 中 | 全栈 TS 编排 | 待 OLLAMA_MODEL 重测 |
-| OpenAI Agents SDK | TypeScript | Handoff | 是 | 是 | 无 | 内置 | 低 | OpenAI 风格 API | 待 OLLAMA_MODEL 重测 |
+| LangGraph.js | TypeScript | 状态图 | 是 | 是 | 依运行时 | LangSmith | 中 | 全栈 TS 编排 | ~10s；工具+合成 JSON |
+| OpenAI Agents SDK | TypeScript | Handoff | 是 | 是 | 无 | 内置 | 低 | OpenAI 风格 API | Ollama + 合成兜底 |
 | MAF / SK (.NET) | C# | 插件/Agent | 是 | 是 | 依 SK | App Insights | 中 | .NET / Azure | 需 .NET SDK |
 | LangChain4j | Java | 链/Agent | 是 | 是 | 内存 | 可选 | 中 | JVM 企业栈 | 需 Maven |
 | Haystack | Python | Agent/Pipeline | 是 | 是 | 管道 | 可选 | 中 | NLP/RAG 管道 | 5886ms fb=no |

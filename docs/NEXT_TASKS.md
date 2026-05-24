@@ -2,21 +2,25 @@
 
 ## 已完成
 
-- Sprint A/B、P1–P3、Haystack/DSPy/HITL
-- `run-smoke-live.ps1` + 真机 smoke（`nemotron-3-super:cloud`，12/14 Python OK）
-- `update-matrix-from-smoke.ps1`、CONFIG / INSTALL_TOOLCHAIN 文档
-- Google ADK 占位 `java/google-adk/`
+- 真机 smoke-live（Python 12/13 OK @ nemotron-3-super:cloud）
+- TS JSON 解析增强 + 工具结果合成兜底
+- verify-toolchain.ps1、CONFIG / INSTALL_TOOLCHAIN
+
+## 待 push
+
+```powershell
+git push origin main   # cd592f9 + 本批
+```
 
 ## 待办
 
-- [ ] `pull-models.ps1` 完成 `qwen2.5:7b` 拉取（见 `docs/pull-qwen.log`）
-- [ ] 安装 .NET 8 / Maven（见 INSTALL_TOOLCHAIN）
-- [ ] TypeScript smoke 真连（已支持 `OLLAMA_MODEL` 环境变量）
-- [ ] Google ADK 可运行 demo（依赖 ADK GA）
+- [ ] pull `qwen2.5:7b` 并重跑 smoke
+- [ ] 安装 .NET / Maven
+- [ ] Google ADK 可运行 demo
 
 ## 命令
 
 ```powershell
 .\scripts\run-smoke-live.ps1 -Model nemotron-3-super:cloud
-.\scripts\update-matrix-from-smoke.ps1
+.\scripts\verify-toolchain.ps1
 ```
