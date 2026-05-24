@@ -1,6 +1,49 @@
 # Run smoke tests with timing + JSON schema validation
 $ErrorActionPreference = "Continue"
 $ProjectRoot = Split-Path -Parent $PSScriptRoot
+
+function Test-DotnetSdk {
+    if (-not (Get-Command dotnet -ErrorAction SilentlyContinue)) { return $false }
+    $sdks = dotnet --list-sdks 2>$null
+    return ($sdks -match '\S')
+}
+
+function Invoke-NpxTsMain {
+    param([string]$Dir, [string]$Topic)
+    $psi = New-Object System.Diagnostics.ProcessStartInfo
+    $psi.FileName = "cmd.exe"
+    $psi.Arguments = "/c npx --yes tsx main.ts `"$Topic`""
+    $psi.RedirectStandardOutput = $true
+    $psi.UseShellExecute = $false
+    $psi.StandardOutputEncoding = [System.Text.Encoding]::UTF8
+    $psi.WorkingDirectory = $Dir
+    $psi.RedirectStandardError = $true
+    $p = [System.Diagnostics.Process]::Start($psi)
+    $out = $p.StandardOutput.ReadToEnd()
+    [void]$p.StandardError.ReadToEnd()
+    $p.WaitForExit()
+    return $out
+}
+
+function Test-StdoutJson {
+    param([string]$Out, [string]$Validator, [string]$PyVenv)
+    if (-not ($Out -match "\{")) { return @{ code = 1; schema = "-"; fallback = "-" } }
+    $tmp = Join-Path $env:TEMP ("llm-agents-validate-{0}.json" -f [guid]::NewGuid().ToString('N'))
+    try {
+        $utf8 = New-Object System.Text.UTF8Encoding $false
+        [System.IO.File]::WriteAllText($tmp, $Out, $utf8)
+        & $PyVenv $Validator $tmp 2>$null | Out-Null
+        $code = $LASTEXITCODE
+    } finally {
+        Remove-Item $tmp -ErrorAction SilentlyContinue
+    }
+    switch ($code) {
+        0 { return @{ code = 0; schema = "OK"; fallback = "no" } }
+        3 { return @{ code = 3; schema = "OK"; fallback = "yes" } }
+        2 { return @{ code = 2; schema = "FAIL"; fallback = "-" } }
+        default { return @{ code = 1; schema = "INVALID"; fallback = "-" } }
+    }
+}
 $LogFile = Join-Path $ProjectRoot "docs\smoke-log.txt"
 $BenchFile = Join-Path $ProjectRoot "docs\benchmarks.md"
 $Topic = "AI Agent 框架选型"
@@ -43,27 +86,21 @@ function Invoke-Smoke {
     $fallback = "-"
     $note = ""
     try {
-        $out = & $RunBlock 2>$null | Out-String
+        $result = & $RunBlock 2>$null
+        if ($result -is [string]) { $out = $result } else { $out = $result | Out-String }
         $sw.Stop()
         $PyVenv = Join-Path $ProjectRoot "python\.venv\Scripts\python.exe"
         $Validator = Join-Path $ProjectRoot "python\scripts\validate_stdout.py"
         if ($out -match "\{") {
-            $out | & $PyVenv $Validator 2>$null
-            $vcode = $LASTEXITCODE
-            if ($vcode -eq 0) {
-                $schema = "OK"
-                $fallback = "no"
+            $v = Test-StdoutJson -Out $out -Validator $Validator -PyVenv $PyVenv
+            $schema = $v.schema
+            $fallback = $v.fallback
+            if ($v.code -eq 0) {
                 $status = "OK"
-            } elseif ($vcode -eq 3) {
-                $schema = "OK"
-                $fallback = "yes"
+            } elseif ($v.code -eq 3) {
                 $status = "OK_FALLBACK"
                 $note = "Ollama unavailable or LLM error"
-            } elseif ($vcode -eq 2) {
-                $schema = "FAIL"
-                $status = "FAIL"
             } else {
-                $schema = "INVALID"
                 $status = "FAIL"
             }
         } else {
@@ -106,12 +143,13 @@ if (Test-Path $PyVenv) {
 }
 
 $DotnetProj = Join-Path $ProjectRoot "dotnet\src\TopicResearchAgent\TopicResearchAgent.csproj"
-if ((Get-Command dotnet -ErrorAction SilentlyContinue) -and (Test-Path $DotnetProj)) {
+if ((Test-DotnetSdk) -and (Test-Path $DotnetProj)) {
     Invoke-Smoke "dotnet/TopicResearchAgent" {
         dotnet run --project $DotnetProj -- $Topic
     }
 } else {
     "| dotnet/TopicResearchAgent | SKIP | - | - | .NET SDK not installed |" | Out-File $LogFile -Append -Encoding utf8
+    $script:benchRows += "| dotnet/TopicResearchAgent | - | - | - | SKIP: .NET SDK |"
 }
 
 $TsRoot = Join-Path $ProjectRoot "typescript"
@@ -120,10 +158,7 @@ if (Test-Path (Join-Path $TsRoot "node_modules")) {
         $pkgDir = Join-Path $TsRoot $pkg
         if (Test-Path (Join-Path $pkgDir "package.json")) {
             Invoke-Smoke "typescript/$pkg" {
-                Push-Location $pkgDir
-                try {
-                    npx --yes tsx main.ts $Topic 2>$null
-                } finally { Pop-Location }
+                Invoke-NpxTsMain -Dir $pkgDir -Topic $Topic
             }
         }
     }

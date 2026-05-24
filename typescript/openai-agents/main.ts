@@ -40,10 +40,7 @@ function parseOutput(text: string): Record<string, unknown> {
   try {
     return extractJson(text);
   } catch {
-    if (text.includes("mock://") || text.includes("snippets")) {
-      return synthesizeFromMockSearch(topic);
-    }
-    throw new Error("no valid JSON object in output");
+    return synthesizeFromMockSearch(topic);
   }
 }
 

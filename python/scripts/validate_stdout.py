@@ -12,7 +12,12 @@ from llm_agents_common.validate import is_fallback_output, validate_output
 
 
 def main() -> int:
-    raw = sys.stdin.read()
+    if len(sys.argv) > 1:
+        raw = Path(sys.argv[1]).read_text(encoding="utf-8-sig")
+    else:
+        raw = sys.stdin.read()
+    if raw.startswith("\ufeff"):
+        raw = raw.lstrip("\ufeff")
     try:
         # Use the last JSON object in stdout (some agents print step logs first)
         starts = [i for i, c in enumerate(raw) if c == "{"]

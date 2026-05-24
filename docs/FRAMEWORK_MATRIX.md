@@ -6,19 +6,19 @@
 
 | 框架 | 语言 | 范式 | Ollama | 多 Agent | 状态/持久化 | 观测 | 上手成本 | 适用场景 | 实测备注 |
 |------|------|------|--------|----------|-------------|------|----------|----------|----------|
-| LangGraph | Python | 状态图 | 是 | 是 | Checkpoint | LangSmith | 中 | 复杂编排、生产 | crew 10537ms fb=no；main 需 fix import |
-| CrewAI | Python | 角色 Crew | 是 | 是 | 有限 | 内置 tracing | 低 | 快速多 Agent 原型 | 42241ms fb=no |
-| LlamaIndex | Python | Agent/RAG | 是 | 是 | 索引持久化 | 可选 | 中 | 数据/RAG 向 Agent | 2915ms fb=no |
-| Pydantic AI | Python | 类型化 Agent | 是 | 有限 | 无 | 可选 | 低 | 类型安全 Python | 7207ms fb=no |
-| AG2 | Python | 对话多 Agent | 是 | 是 | 会话 | 基础 | 中 | 研究式对话协作 | 9881ms fb=no |
-| Smolagents | Python | Code Agent | 是 | 有限 | 无 | HF | 低 | 轻量 HF 生态 | 25553ms fb=no |
-| MAF (Python) | Python | 企业 Agent | 是 | 是 | 依 SDK | Azure | 中 | Microsoft 生态 | 8464ms fb=no |
-| LangGraph.js | TypeScript | 状态图 | 是 | 是 | 依运行时 | LangSmith | 中 | 全栈 TS 编排 | ~10s；工具+合成 JSON |
-| OpenAI Agents SDK | TypeScript | Handoff | 是 | 是 | 无 | 内置 | 低 | OpenAI 风格 API | Ollama + 合成兜底 |
+| LangGraph | Python | 状态图 | 是 | 是 | Checkpoint | LangSmith | 中 | 复杂编排、生产 | 27796ms fb=no (nemotron-3-super:cloud smoke) |
+| CrewAI | Python | 角色 Crew | 是 | 是 | 有限 | 内置 tracing | 低 | 快速多 Agent 原型 | 80131ms fb=no (nemotron-3-super:cloud smoke) |
+| LlamaIndex | Python | Agent/RAG | 是 | 是 | 索引持久化 | 可选 | 中 | 数据/RAG 向 Agent | 5285ms fb=no (nemotron-3-super:cloud smoke) |
+| Pydantic AI | Python | 类型化 Agent | 是 | 有限 | 无 | 可选 | 低 | 类型安全 Python | 25731ms fb=no (nemotron-3-super:cloud smoke) |
+| AG2 | Python | 对话多 Agent | 是 | 是 | 会话 | 基础 | 中 | 研究式对话协作 | 12061ms fb=no (nemotron-3-super:cloud smoke) |
+| Smolagents | Python | Code Agent | 是 | 有限 | 无 | HF | 低 | 轻量 HF 生态 | 31443ms fb=no (nemotron-3-super:cloud smoke) |
+| MAF (Python) | Python | 企业 Agent | 是 | 是 | 依 SDK | Azure | 中 | Microsoft 生态 | 23164ms fb=no (nemotron-3-super:cloud smoke) |
+| LangGraph.js | TypeScript | 状态图 | 是 | 是 | 依运行时 | LangSmith | 中 | 全栈 TS 编排 | 15743ms fb=no (nemotron-3-super:cloud smoke) |
+| OpenAI Agents SDK | TypeScript | Handoff | 是 | 是 | 无 | 内置 | 低 | OpenAI 风格 API | 10619ms fb=no (nemotron-3-super:cloud smoke) |
 | MAF / SK (.NET) | C# | 插件/Agent | 是 | 是 | 依 SK | App Insights | 中 | .NET / Azure | 需 .NET SDK |
 | LangChain4j | Java | 链/Agent | 是 | 是 | 内存 | 可选 | 中 | JVM 企业栈 | 需 Maven |
-| Haystack | Python | Agent/Pipeline | 是 | 是 | 管道 | 可选 | 中 | NLP/RAG 管道 | 5886ms fb=no |
-| DSPy | Python | 编程式优化 | 是 | 有限 | 无 | 实验 | 高 | Prompt 优化 | 15401ms fb=no |
+| Haystack | Python | Agent/Pipeline | 是 | 是 | 管道 | 可选 | 中 | NLP/RAG 管道 | 27018ms fb=no (nemotron-3-super:cloud smoke) |
+| DSPy | Python | 编程式优化 | 是 | 有限 | 无 | 实验 | 高 | Prompt 优化 | 34500ms fb=no (nemotron-3-super:cloud smoke) |
 | Google ADK | Java/Kotlin | 工具 Agent | 部分 | 是 | 依平台 | GCP | 中 | Google Cloud | `java/google-adk` ADK 1.1; mock 无 Key |
 | AutoGen (原版) | Python | 对话 | 是 | 是 | 会话 | 基础 | — | 维护模式 | 不默认实现 |
 | Claude Agent SDK | TS/Python | 工具循环 | 否 | 是 | 会话 | Anthropic | 低 | Claude 原生 | 需云端 API |
@@ -31,3 +31,4 @@
 - **要类型与校验** → Pydantic AI
 - **Azure / .NET 企业栈** → Microsoft Agent Framework
 - **JVM** → LangChain4j
+

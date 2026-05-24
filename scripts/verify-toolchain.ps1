@@ -13,10 +13,25 @@ function Test-Tool($Name, $Cmd) {
     return $false
 }
 
+function Test-DotnetSdk {
+    if (-not (Get-Command dotnet -ErrorAction SilentlyContinue)) {
+        Write-Host "  --  .NET SDK not found" -ForegroundColor Yellow
+        return $false
+    }
+    $sdks = dotnet --list-sdks 2>$null
+    if ($sdks -match '\S') {
+        $v = ($sdks | Select-Object -First 1).Trim()
+        Write-Host "  OK  .NET SDK : $v" -ForegroundColor Green
+        return $true
+    }
+    Write-Host "  --  .NET SDK not found (dotnet host only)" -ForegroundColor Yellow
+    return $false
+}
+
 Test-Tool "python" "python" | Out-Null
 Test-Tool "node" "node" | Out-Null
 Test-Tool "ollama" "ollama" | Out-Null
-if (-not (Test-Tool ".NET SDK" "dotnet")) { $allOk = $false }
+if (-not (Test-DotnetSdk)) { $allOk = $false }
 if (-not (Test-Tool "Maven" "mvn")) { $allOk = $false }
 if (-not (Test-Tool "Java" "java")) { $allOk = $false }
 
