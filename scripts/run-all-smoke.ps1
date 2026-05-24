@@ -129,6 +129,16 @@ if (Test-Path (Join-Path $TsRoot "node_modules")) {
     }
 }
 
+$JavaAdk = Join-Path $ProjectRoot "java\google-adk"
+if ((Get-Command mvn -ErrorAction SilentlyContinue) -and (Test-Path (Join-Path $JavaAdk "pom.xml"))) {
+    Invoke-Smoke "java/google-adk" {
+        Push-Location $JavaAdk
+        try { mvn -Dmaven.repo.local=..\.m2\repository -q exec:java "-Dexec.args=$Topic" } finally { Pop-Location }
+    }
+} elseif (Test-Path (Join-Path $JavaAdk "pom.xml")) {
+    "| java/google-adk | SKIP | - | - | Maven not installed |" | Out-File $LogFile -Append -Encoding utf8
+}
+
 $JavaDir = Join-Path $ProjectRoot "java\langchain4j"
 if ((Get-Command mvn -ErrorAction SilentlyContinue) -and (Test-Path (Join-Path $JavaDir "pom.xml"))) {
     Invoke-Smoke "java/langchain4j" {

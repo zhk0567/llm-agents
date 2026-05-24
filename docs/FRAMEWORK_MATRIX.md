@@ -19,7 +19,7 @@
 | LangChain4j | Java | 链/Agent | 是 | 是 | 内存 | 可选 | 中 | JVM 企业栈 | 需 Maven |
 | Haystack | Python | Agent/Pipeline | 是 | 是 | 管道 | 可选 | 中 | NLP/RAG 管道 | 5886ms fb=no |
 | DSPy | Python | 编程式优化 | 是 | 有限 | 无 | 实验 | 高 | Prompt 优化 | 15401ms fb=no |
-| Google ADK | Java/Kotlin | 工具 Agent | 部分 | 是 | 依平台 | GCP | 中 | Google Cloud | 占位 `java/google-adk` |
+| Google ADK | Java/Kotlin | 工具 Agent | 部分 | 是 | 依平台 | GCP | 中 | Google Cloud | `java/google-adk` ADK 1.1; mock 无 Key |
 | AutoGen (原版) | Python | 对话 | 是 | 是 | 会话 | 基础 | — | 维护模式 | 不默认实现 |
 | Claude Agent SDK | TS/Python | 工具循环 | 否 | 是 | 会话 | Anthropic | 低 | Claude 原生 | 需云端 API |
 

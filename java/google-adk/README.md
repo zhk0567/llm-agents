@@ -1,22 +1,25 @@
-# Google ADK（Agent Development Kit）
+# Google ADK (Java)
 
-> 占位模块：与 LangChain4j 对照，完整 demo 待 Google ADK Maven 坐标稳定后补充。
+[Google Agent Development Kit](https://google.github.io/adk-docs/) 示例，对齐 [TASK_SPEC.md](../../shared/TASK_SPEC.md)。
 
-## 状态
+## 模式
 
-- 矩阵中已占行；**可运行 demo 未实现**
-- 推荐场景：Google Cloud / Vertex AI 生态
+- **有 `GOOGLE_API_KEY`**：ADK `LlmAgent` + `searchTopic` 工具（Gemini）
+- **无 API Key**：输出 mock JSON（与 Python fallback 一致，便于 smoke）
 
-## 计划
+## 运行
 
-1. 添加 `pom.xml` + ADK 依赖（GA 后）
-2. 实现与 [TASK_SPEC.md](../../shared/TASK_SPEC.md) 相同的 TopicResearchAgent
-3. 接入 `run-all-smoke.ps1`
+```powershell
+cd f:\commercial\llm-agents\java\google-adk
+mvn -Dmaven.repo.local=..\.m2\repository -q exec:java "-Dexec.args=测试主题"
+```
 
-## 参考
+可选：`$env:ADK_MODEL = "gemini-2.0-flash"`
 
-- https://google.github.io/adk-docs/
+## Ollama
 
-## 本机 JVM 前置
+ADK 默认面向 Gemini；本地 Ollama 需按 [Models & Authentication](https://google.github.io/adk-docs/agents/models/) 配置。本仓库 smoke 无 Key 时走 mock。
 
-见 [docs/INSTALL_TOOLCHAIN.md](../../docs/INSTALL_TOOLCHAIN.md)。
+## 前置
+
+JDK 17+、Maven 3.9+ — 见 [docs/INSTALL_TOOLCHAIN.md](../../docs/INSTALL_TOOLCHAIN.md) 或 `..\..\scripts\install-toolchain.ps1`

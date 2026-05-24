@@ -40,4 +40,6 @@ mvn -Dmaven.repo.local=..\.m2\repository -q exec:java "-Dexec.args=测试主题"
 ```powershell
 .\scripts\bootstrap.ps1
 .\scripts\check-ollama.ps1
+.\scripts\install-toolchain.ps1   # 可选：winget 安装 .NET / JDK / Maven
+.\scripts\verify-toolchain.ps1
 ```

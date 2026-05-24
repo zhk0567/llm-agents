@@ -2,25 +2,21 @@
 
 ## 已完成
 
-- 真机 smoke-live（Python 12/13 OK @ nemotron-3-super:cloud）
-- TS JSON 解析增强 + 工具结果合成兜底
-- verify-toolchain.ps1、CONFIG / INSTALL_TOOLCHAIN
+- Sprint A/B、P1–P3、Haystack/DSPy/HITL、TS 真连
+- smoke-live + 矩阵实测（nemotron-3-super:cloud）
+- Google ADK Java demo（mock fallback 无 GOOGLE_API_KEY）
+- install-toolchain.ps1、wait-and-smoke.ps1
 
-## 待 push
+## 待办（需本机）
 
-```powershell
-git push origin main   # cd592f9 + 本批
-```
+- [ ] `qwen2.5:7b` 拉取完成：`.\scripts\wait-and-smoke.ps1` 或 `pull-models.ps1`
+- [ ] `install-toolchain.ps1` → `verify-toolchain.ps1` 全绿
+- [ ] ADK + Gemini：设置 `GOOGLE_API_KEY` 后重跑 `java/google-adk`
 
-## 待办
-
-- [ ] pull `qwen2.5:7b` 并重跑 smoke
-- [ ] 安装 .NET / Maven
-- [ ] Google ADK 可运行 demo
-
-## 命令
+## 常用命令
 
 ```powershell
+.\scripts\install-toolchain.ps1 -WhatIf
 .\scripts\run-smoke-live.ps1 -Model nemotron-3-super:cloud
-.\scripts\verify-toolchain.ps1
+.\scripts\wait-and-smoke.ps1 -Model qwen2.5:7b
 ```
