@@ -15,7 +15,7 @@ try:
 except ImportError:
     from langchain.agents import create_agent as create_react_agent  # noqa: F401
 
-from llm_agents_common.config import get_topic_from_argv, load_ollama_config
+from llm_agents_common.config import get_topic_from_argv, load_agent_config, load_ollama_config
 from llm_agents_common.search import search_topic as do_search
 from llm_agents_common.output import extract_json_object, fallback_result, print_result
 

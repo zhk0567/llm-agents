@@ -25,7 +25,7 @@ try {
     "|-----------|--------|-----|--------|----------|"
 ) | Out-File $LogFile -Encoding utf8
 
-$benchRows = @(
+$script:benchRows = @(
     "# Benchmarks",
     "",
     "Updated: $Timestamp",
@@ -79,7 +79,7 @@ function Invoke-Smoke {
     $ms = [int]$sw.ElapsedMilliseconds
     Write-Host "  $status (${ms}ms) schema=$schema fallback=$fallback"
     "| $Name | $status | $ms | $schema | $fallback |" | Out-File $LogFile -Append -Encoding utf8
-    $benchRows += "| $Name | $ms | $schema | $fallback | $note |"
+    $script:benchRows += "| $Name | $ms | $schema | $fallback | $note |"
 }
 
 $PyVenv = Join-Path $ProjectRoot "python\.venv\Scripts\python.exe"
@@ -137,7 +137,7 @@ if ((Get-Command mvn -ErrorAction SilentlyContinue) -and (Test-Path (Join-Path $
     "| java/langchain4j | SKIP | - | - | Maven not installed |" | Out-File $LogFile -Append -Encoding utf8
 }
 
-$benchRows | Out-File $BenchFile -Encoding utf8
+$script:benchRows | Out-File $BenchFile -Encoding utf8
 Write-Host ""
 Write-Host "Log: $LogFile"
 Write-Host "Benchmarks: $BenchFile"

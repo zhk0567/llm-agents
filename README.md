@@ -70,7 +70,13 @@ cd python\langgraph
 - Azure/.NET → **dotnet/**
 - JVM → **java/langchain4j**
 
-详见 [docs/FRAMEWORK_MATRIX.md](docs/FRAMEWORK_MATRIX.md) 与 [docs/COMPARISON_REPORT.md](docs/COMPARISON_REPORT.md)。
+详见 [docs/FRAMEWORK_MATRIX.md](docs/FRAMEWORK_MATRIX.md)、[docs/COMPARISON_REPORT.md](docs/COMPARISON_REPORT.md)、[docs/CONFIG.md](docs/CONFIG.md)。
+
+## 工具链与真机 smoke
+
+- 安装 .NET / Maven：[docs/INSTALL_TOOLCHAIN.md](docs/INSTALL_TOOLCHAIN.md)
+- 使用已有 Ollama 模型跑 smoke：`.\scripts\run-smoke-live.ps1 -Model <模型名>`
+- 回填矩阵：`.\scripts\update-matrix-from-smoke.ps1`
 
 ## 后续任务
 

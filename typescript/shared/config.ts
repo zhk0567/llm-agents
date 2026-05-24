@@ -17,7 +17,11 @@ export interface OllamaConfig {
 
 export function loadOllamaConfig(): OllamaConfig {
   const path = join(projectRoot(), "config", "ollama.json");
-  return JSON.parse(readFileSync(path, "utf-8")) as OllamaConfig;
+  const cfg = JSON.parse(readFileSync(path, "utf-8")) as OllamaConfig;
+  if (process.env.OLLAMA_MODEL) {
+    cfg.default_model = process.env.OLLAMA_MODEL;
+  }
+  return cfg;
 }
 
 export function searchTopicMock(topic: string): string {
