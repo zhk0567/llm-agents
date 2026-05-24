@@ -54,6 +54,7 @@ cd python\langgraph
 |------|------|
 | `shared/` | 统一任务规格与 mock 工具 |
 | `config/ollama.json` | 模型与 API 端点 |
+| `config/agent.json` | 重试、超时、默认主题、mock 检索开关 |
 | `python/` | LangGraph、CrewAI、LlamaIndex、Haystack、DSPy 等 |
 | `typescript/` | LangGraph.js、OpenAI Agents SDK |
 | `dotnet/` | Microsoft Agent Framework / Semantic Kernel |

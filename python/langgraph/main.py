@@ -29,10 +29,12 @@ def search_topic(topic: str) -> str:
 def main() -> None:
     topic = get_topic_from_argv()
     cfg = load_ollama_config()
+    agent_cfg = load_agent_config()
     llm = ChatOllama(
         model=cfg["default_model"],
         base_url=cfg["host"],
         temperature=0.2,
+        num_retries=int(agent_cfg.get("max_retries", 2)),
     )
     agent = create_react_agent(llm, [search_topic])
     prompt = (

@@ -7,15 +7,18 @@ import os
 import sys
 from pathlib import Path
 
-from llm_agents_common.config import project_root
+from llm_agents_common.config import load_agent_config, project_root
 
 
 def use_mock_search() -> bool:
-    return os.environ.get("USE_MOCK_SEARCH", "1").strip().lower() not in (
-        "0",
-        "false",
-        "no",
-    )
+    agent = load_agent_config()
+    if os.environ.get("USE_MOCK_SEARCH") is not None:
+        return os.environ["USE_MOCK_SEARCH"].strip().lower() not in (
+            "0",
+            "false",
+            "no",
+        )
+    return bool(agent.get("use_mock_search", True))
 
 
 def _load_module(name: str, rel_path: str):
