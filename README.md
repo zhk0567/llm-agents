@@ -54,7 +54,7 @@ cd python\langgraph
 |------|------|
 | `shared/` | 统一任务规格与 mock 工具 |
 | `config/ollama.json` | 模型与 API 端点 |
-| `python/` | LangGraph、CrewAI、LlamaIndex 等 |
+| `python/` | LangGraph、CrewAI、LlamaIndex、Haystack、DSPy 等 |
 | `typescript/` | LangGraph.js、OpenAI Agents SDK |
 | `dotnet/` | Microsoft Agent Framework / Semantic Kernel |
 | `java/langchain4j/` | LangChain4j |
@@ -69,7 +69,7 @@ cd python\langgraph
 - Azure/.NET → **dotnet/**
 - JVM → **java/langchain4j**
 
-详见 [docs/FRAMEWORK_MATRIX.md](docs/FRAMEWORK_MATRIX.md)。
+详见 [docs/FRAMEWORK_MATRIX.md](docs/FRAMEWORK_MATRIX.md) 与 [docs/COMPARISON_REPORT.md](docs/COMPARISON_REPORT.md)。
 
 ## 后续任务
 

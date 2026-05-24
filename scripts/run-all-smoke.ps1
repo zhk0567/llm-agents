@@ -91,7 +91,7 @@ if (-not (Test-Path $PyVenv)) {
 }
 
 if (Test-Path $PyVenv) {
-    foreach ($fw in @("langgraph", "crewai", "llamaindex", "pydantic_ai", "smolagents", "ag2", "maf")) {
+    foreach ($fw in @("langgraph", "crewai", "llamaindex", "pydantic_ai", "smolagents", "ag2", "maf", "haystack", "dspy")) {
         foreach ($script in @("main.py", "crew_research.py")) {
             $main = Join-Path $PyRoot "$fw\$script"
             if (Test-Path $main) {

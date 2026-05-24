@@ -26,6 +26,7 @@ java/**/target/
 # Env & logs
 .env
 docs/smoke-log.txt
+data/
 *.log
 
 # IDE
