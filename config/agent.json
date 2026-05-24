@@ -1,0 +1,6 @@
+{
+  "max_retries": 2,
+  "timeout_seconds": 120,
+  "default_topic": "AI Agent 框架选型",
+  "use_mock_search": true
+}

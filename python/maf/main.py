@@ -18,14 +18,14 @@ from semantic_kernel.connectors.ai.open_ai.prompt_execution_settings.open_ai_pro
 from semantic_kernel.functions import kernel_function
 
 from llm_agents_common.config import get_topic_from_argv, load_ollama_config
-from llm_agents_common.mock_search import search_topic as mock_search
+from llm_agents_common.search import search_topic as do_search
 from llm_agents_common.output import extract_json_object, fallback_result, print_result
 
 
 class ResearchPlugin:
     @kernel_function(name="search_topic", description="Search for information about a topic")
     def search_topic(self, topic: str) -> str:
-        return mock_search(topic)
+        return do_search(topic)
 
 
 async def run_agent(topic: str) -> str:

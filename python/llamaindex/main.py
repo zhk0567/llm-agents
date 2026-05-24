@@ -13,12 +13,12 @@ from llama_index.core.tools import FunctionTool
 from llama_index.llms.ollama import Ollama
 
 from llm_agents_common.config import get_topic_from_argv, load_ollama_config
-from llm_agents_common.mock_search import search_topic as mock_search
+from llm_agents_common.search import search_topic as do_search
 from llm_agents_common.output import extract_json_object, fallback_result, print_result
 
 
 def search_topic_fn(topic: str) -> str:
-    return mock_search(topic)
+    return do_search(topic)
 
 
 async def run_agent(topic: str) -> str:

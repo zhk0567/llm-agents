@@ -11,13 +11,14 @@ from crewai import Agent, Crew, LLM, Process, Task
 from crewai.tools import tool
 
 from llm_agents_common.config import get_topic_from_argv, load_ollama_config
-from llm_agents_common.mock_search import search_topic as mock_search
+from llm_agents_common.search import search_topic as do_search
 from llm_agents_common.output import extract_json_object, fallback_result, print_result
 
 
 @tool("search_topic")
 def search_topic_tool(topic: str) -> str:
-    return mock_search(topic)
+    """Search for information about a topic. Returns JSON snippets."""
+    return do_search(topic)
 
 
 def main() -> None:

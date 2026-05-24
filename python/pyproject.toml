@@ -13,6 +13,7 @@ pydantic = ["pydantic-ai>=0.0.14", "openai>=1.50.0"]
 ag2 = ["pyautogen>=0.7.0", "autogen-ext[openai]>=0.4.0"]
 smolagents = ["smolagents[litellm]>=1.0.0"]
 maf = ["semantic-kernel>=1.20.0", "openai>=1.50.0"]
+search = ["duckduckgo-search>=6.0.0"]
 all = [
     "langchain-core>=0.3.0",
     "langchain-ollama>=0.2.0",
@@ -26,7 +27,9 @@ all = [
     "autogen-ext[openai]>=0.4.0",
     "smolagents[litellm]>=1.0.0",
     "semantic-kernel>=1.20.0",
+    "duckduckgo-search>=6.0.0",
 ]
+dev = ["pytest>=8.0.0"]
 
 [tool.setuptools.packages.find]
 where = ["."]

@@ -16,14 +16,14 @@ except ImportError:
     from langchain.agents import create_agent as create_react_agent  # noqa: F401
 
 from llm_agents_common.config import get_topic_from_argv, load_ollama_config
-from llm_agents_common.mock_search import search_topic as mock_search
+from llm_agents_common.search import search_topic as do_search
 from llm_agents_common.output import extract_json_object, fallback_result, print_result
 
 
 @tool
 def search_topic(topic: str) -> str:
     """Search for information about a topic. Returns JSON snippets."""
-    return mock_search(topic)
+    return do_search(topic)
 
 
 def main() -> None:

@@ -13,6 +13,9 @@
 ```powershell
 cd f:\commercial\llm-agents
 
+# 一键初始化（venv、npm、依赖）
+.\scripts\bootstrap.ps1
+
 # 将 Ollama 模型目录指向本项目
 . .\scripts\setup-ollama.ps1
 
@@ -21,7 +24,12 @@ cd f:\commercial\llm-agents
 
 # 启动 Ollama（另开终端，先 dot-source setup）
 ollama serve
+
+# 检查连通性与默认模型
+.\scripts\check-ollama.ps1
 ```
+
+若本机已有其他模型，可临时指定：`$env:OLLAMA_MODEL = "你的模型名"`
 
 ## Python 环境
 
@@ -62,6 +70,10 @@ cd python\langgraph
 - JVM → **java/langchain4j**
 
 详见 [docs/FRAMEWORK_MATRIX.md](docs/FRAMEWORK_MATRIX.md)。
+
+## 后续任务
+
+见 [docs/NEXT_TASKS.md](docs/NEXT_TASKS.md)（按 P0→P5 优先级排列的待办清单）。
 
 ## Smoke 测试
 

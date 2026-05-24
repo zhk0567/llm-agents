@@ -10,7 +10,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from smolagents import LiteLLMModel, ToolCallingAgent, tool
 
 from llm_agents_common.config import get_topic_from_argv, load_ollama_config
-from llm_agents_common.mock_search import search_topic as mock_search
+from llm_agents_common.search import search_topic as do_search
 from llm_agents_common.output import extract_json_object, fallback_result, print_result
 
 
@@ -20,7 +20,7 @@ def _search_topic_impl(topic: str) -> str:
     Args:
         topic: The research topic to search for.
     """
-    return mock_search(topic)
+    return do_search(topic)
 
 
 search_topic = tool(_search_topic_impl)
@@ -45,8 +45,13 @@ def main() -> None:
         '{"topic":"...","bullets":["","",""],"summary":"..."}'
     )
     try:
-        raw = agent.run(prompt)
-        print_result(extract_json_object(str(raw)))
+        import io
+        import contextlib
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            raw = agent.run(prompt)
+        text = buf.getvalue() or str(raw)
+        print_result(extract_json_object(text))
     except Exception as exc:
         print_result(fallback_result(topic, str(exc)))
 

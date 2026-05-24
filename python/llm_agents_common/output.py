@@ -32,5 +32,5 @@ def fallback_result(topic: str, raw: str | None = None) -> dict[str, Any]:
             f"{topic}：本地 Ollama 可离线运行 mock 检索流程。",
             f"{topic}：各框架应输出相同 JSON 结构便于横向比较。",
         ],
-        "summary": (raw or f"关于「{topic}」的简要总结（fallback）。")[:500],
+        "summary": (raw or f"[fallback] 关于「{topic}」的简要总结。")[:500],
     }

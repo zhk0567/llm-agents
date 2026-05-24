@@ -13,7 +13,7 @@ from pydantic_ai.models.openai import OpenAIChatModel
 from pydantic_ai.providers.openai import OpenAIProvider
 
 from llm_agents_common.config import get_topic_from_argv, load_ollama_config
-from llm_agents_common.mock_search import search_topic as mock_search
+from llm_agents_common.search import search_topic as do_search
 from llm_agents_common.output import fallback_result, print_result
 
 
@@ -40,7 +40,7 @@ def main() -> None:
     @agent.tool_plain
     def search_topic(query: str) -> str:
         """Search for information about a topic."""
-        return mock_search(query)
+        return do_search(query)
 
     prompt = f"研究主题：{topic}。先 search_topic，再返回 topic/bullets/summary。"
     try:
