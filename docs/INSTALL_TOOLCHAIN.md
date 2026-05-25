@@ -1,4 +1,6 @@
-# Windows 工具链安装指引（运行 dotnet/ java 示例前）
+# Windows 工具链安装指引（运行 dotnet/ java 参考示例前）
+
+> **说明**：本仓库收尾与 live smoke **不依赖**此文档。仅当读者自行扩展 `dotnet/`、`java/` 示例时使用。交付状态见 [PROJECT_STATUS.md](./PROJECT_STATUS.md)。
 
 ## .NET 8 SDK
 

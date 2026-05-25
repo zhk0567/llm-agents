@@ -1,4 +1,4 @@
-# Parse docs/smoke-log.md table rows into benchmarks.md (last column = 实测备注 only in manual matrix)
+# Parse docs/smoke-log.txt into benchmarks.md (last column = 实测备注 only in manual matrix)
 $ErrorActionPreference = "Stop"
 $ProjectRoot = Split-Path -Parent $PSScriptRoot
 $Log = Join-Path $ProjectRoot "docs\smoke-log.txt"
@@ -7,7 +7,8 @@ $Matrix = Join-Path $ProjectRoot "docs\FRAMEWORK_MATRIX.md"
 
 if (-not (Test-Path $Log)) { Write-Host "Missing smoke-log"; exit 1 }
 
-$lines = Get-Content $Log
+$utf8 = New-Object System.Text.UTF8Encoding $false
+$lines = [System.IO.File]::ReadAllLines($Log, $utf8)
 $runLine = ($lines | Where-Object { $_ -match '^- Run:' }) -replace '^- Run:\s*',''
 $topicLine = ($lines | Where-Object { $_ -match '^- Topic:' }) -replace '^- Topic:\s*',''
 $ollamaLine = ($lines | Where-Object { $_ -match '^- Ollama:' }) -replace '^- Ollama:\s*',''
@@ -53,17 +54,21 @@ foreach ($line in $lines) {
             $note = "${ms}ms fb=$fb (nemotron-3-super:cloud smoke)"
             if (-not $matrixNotes.ContainsKey($key)) { $matrixNotes[$key] = $note }
         }
+    } elseif ($line -match '^\|\s*([^\|]+)\s*\|\s*SKIP\s*\|\s*-\s*\|\s*([^|]*)\|\s*([^|]*)\|') {
+        $fw = $Matches[1].Trim()
+        $schema = $Matches[2].Trim()
+        $fb = $Matches[3].Trim()
+        $benchOut += "| $fw | - | $schema | $fb | SKIP |"
     }
 }
 
-$benchOut | Set-Content $BenchFile -Encoding utf8
+[System.IO.File]::WriteAllText($BenchFile, ($benchOut -join "`n") + "`n", $utf8)
 
-$content = Get-Content $Matrix -Raw -Encoding UTF8
+$content = [System.IO.File]::ReadAllText($Matrix, $utf8)
 foreach ($name in $matrixNotes.Keys) {
     $note = $matrixNotes[$name]
     $esc = [regex]::Escape($name)
-    # Replace only the last column (实测备注) before trailing pipe+newline
     $content = $content -replace "(\|\s*$esc\s*(?:\|[^|\r\n]+){8}\|)\s*[^|\r\n]*(\s*\|)", "`${1} $note `${2}"
 }
-$content | Set-Content $Matrix -Encoding utf8
+[System.IO.File]::WriteAllText($Matrix, $content, $utf8)
 Write-Host "Updated benchmarks + matrix notes from smoke-log"

@@ -1,4 +1,4 @@
-﻿# AI Agent 框架对比矩阵
+# AI Agent 框架对比矩阵
 
 基准任务：[shared/TASK_SPEC.md](../shared/TASK_SPEC.md)（TopicResearchAgent + 本地 Ollama）
 
@@ -15,11 +15,11 @@
 | MAF (Python) | Python | 企业 Agent | 是 | 是 | 依 SDK | Azure | 中 | Microsoft 生态 | 23164ms fb=no (nemotron-3-super:cloud smoke) |
 | LangGraph.js | TypeScript | 状态图 | 是 | 是 | 依运行时 | LangSmith | 中 | 全栈 TS 编排 | 15743ms fb=no (nemotron-3-super:cloud smoke) |
 | OpenAI Agents SDK | TypeScript | Handoff | 是 | 是 | 无 | 内置 | 低 | OpenAI 风格 API | 10619ms fb=no (nemotron-3-super:cloud smoke) |
-| MAF / SK (.NET) | C# | 插件/Agent | 是 | 是 | 依 SK | App Insights | 中 | .NET / Azure | 需 .NET SDK |
-| LangChain4j | Java | 链/Agent | 是 | 是 | 内存 | 可选 | 中 | JVM 企业栈 | 需 Maven |
+| MAF / SK (.NET) | C# | 插件/Agent | 是 | 是 | 依 SK | App Insights | 中 | .NET / Azure | 代码已实现；live smoke 需 .NET SDK，本仓库策略下未测 |
+| LangChain4j | Java | 链/Agent | 是 | 是 | 内存 | 可选 | 中 | JVM 企业栈 | 代码已实现；live smoke 需 Maven，本仓库策略下未测 |
 | Haystack | Python | Agent/Pipeline | 是 | 是 | 管道 | 可选 | 中 | NLP/RAG 管道 | 27018ms fb=no (nemotron-3-super:cloud smoke) |
 | DSPy | Python | 编程式优化 | 是 | 有限 | 无 | 实验 | 高 | Prompt 优化 | 34500ms fb=no (nemotron-3-super:cloud smoke) |
-| Google ADK | Java/Kotlin | 工具 Agent | 部分 | 是 | 依平台 | GCP | 中 | Google Cloud | `java/google-adk` ADK 1.1; mock 无 Key |
+| Google ADK | Java/Kotlin | 工具 Agent | 部分 | 是 | 依平台 | GCP | 中 | Google Cloud | 代码已实现；live smoke 需 Maven/云端 Key，本仓库策略下未测 |
 | AutoGen (原版) | Python | 对话 | 是 | 是 | 会话 | 基础 | — | 维护模式 | 不默认实现 |
 | Claude Agent SDK | TS/Python | 工具循环 | 否 | 是 | 会话 | Anthropic | 低 | Claude 原生 | 需云端 API |
 

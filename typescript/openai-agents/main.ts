@@ -12,6 +12,8 @@ import {
 const topic = process.argv.slice(2).join(" ") || "AI Agent 框架选型";
 const cfg = loadOllamaConfig();
 
+process.env.OPENAI_AGENTS_DISABLE_TRACING = "1";
+
 process.env.OPENAI_API_KEY = cfg.api_key;
 process.env.OPENAI_BASE_URL = cfg.base_url;
 

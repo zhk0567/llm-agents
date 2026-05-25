@@ -2,6 +2,20 @@
 $ErrorActionPreference = "Continue"
 $ProjectRoot = Split-Path -Parent $PSScriptRoot
 
+function Get-Utf8Encoding {
+    return New-Object System.Text.UTF8Encoding $false
+}
+
+function Write-Utf8Text {
+    param([string]$Path, [string]$Content)
+    [System.IO.File]::WriteAllText($Path, $Content, (Get-Utf8Encoding))
+}
+
+function Append-Utf8Line {
+    param([string]$Path, [string]$Line)
+    [System.IO.File]::AppendAllText($Path, $Line + "`n", (Get-Utf8Encoding))
+}
+
 function Test-DotnetSdk {
     if (-not (Get-Command dotnet -ErrorAction SilentlyContinue)) { return $false }
     $sdks = dotnet --list-sdks 2>$null
@@ -57,7 +71,7 @@ try {
     else { $OllamaStatus = "down" }
 } catch { $OllamaStatus = "down" }
 
-@(
+$logHeader = @(
     "# Smoke log",
     "",
     "- Run: $Timestamp",
@@ -66,7 +80,8 @@ try {
     "",
     "| Framework | Status | ms | Schema | Fallback |",
     "|-----------|--------|-----|--------|----------|"
-) | Out-File $LogFile -Encoding utf8
+) -join "`n"
+Write-Utf8Text -Path $LogFile -Content ($logHeader + "`n")
 
 $script:benchRows = @(
     "# Benchmarks",
@@ -115,7 +130,7 @@ function Invoke-Smoke {
     }
     $ms = [int]$sw.ElapsedMilliseconds
     Write-Host "  $status (${ms}ms) schema=$schema fallback=$fallback"
-    "| $Name | $status | $ms | $schema | $fallback |" | Out-File $LogFile -Append -Encoding utf8
+    Append-Utf8Line -Path $LogFile -Line "| $Name | $status | $ms | $schema | $fallback |"
     $script:benchRows += "| $Name | $ms | $schema | $fallback | $note |"
 }
 
@@ -148,7 +163,7 @@ if ((Test-DotnetSdk) -and (Test-Path $DotnetProj)) {
         dotnet run --project $DotnetProj -- $Topic
     }
 } else {
-    "| dotnet/TopicResearchAgent | SKIP | - | - | .NET SDK not installed |" | Out-File $LogFile -Append -Encoding utf8
+    Append-Utf8Line -Path $LogFile -Line "| dotnet/TopicResearchAgent | SKIP | - | - | .NET SDK not installed |"
     $script:benchRows += "| dotnet/TopicResearchAgent | - | - | - | SKIP: .NET SDK |"
 }
 
@@ -171,7 +186,8 @@ if ((Get-Command mvn -ErrorAction SilentlyContinue) -and (Test-Path (Join-Path $
         try { mvn -Dmaven.repo.local=..\.m2\repository -q exec:java "-Dexec.args=$Topic" } finally { Pop-Location }
     }
 } elseif (Test-Path (Join-Path $JavaAdk "pom.xml")) {
-    "| java/google-adk | SKIP | - | - | Maven not installed |" | Out-File $LogFile -Append -Encoding utf8
+    Append-Utf8Line -Path $LogFile -Line "| java/google-adk | SKIP | - | - | Maven not installed |"
+    $script:benchRows += "| java/google-adk | - | - | - | SKIP: Maven |"
 }
 
 $JavaDir = Join-Path $ProjectRoot "java\langchain4j"
@@ -181,10 +197,11 @@ if ((Get-Command mvn -ErrorAction SilentlyContinue) -and (Test-Path (Join-Path $
         try { mvn -Dmaven.repo.local=..\.m2\repository -q exec:java "-Dexec.args=$Topic" } finally { Pop-Location }
     }
 } else {
-    "| java/langchain4j | SKIP | - | - | Maven not installed |" | Out-File $LogFile -Append -Encoding utf8
+    Append-Utf8Line -Path $LogFile -Line "| java/langchain4j | SKIP | - | - | Maven not installed |"
+    $script:benchRows += "| java/langchain4j | - | - | - | SKIP: Maven |"
 }
 
-$script:benchRows | Out-File $BenchFile -Encoding utf8
+Write-Utf8Text -Path $BenchFile -Content (($script:benchRows -join "`n") + "`n")
 Write-Host ""
 Write-Host "Log: $LogFile"
 Write-Host "Benchmarks: $BenchFile"

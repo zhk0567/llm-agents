@@ -1,7 +1,7 @@
-﻿# Benchmarks
+# Benchmarks
 
 Updated: 2026-05-24 18:25:05
-Topic: AI Agent 妗嗘灦閫夊瀷
+Topic: AI Agent 框架选型
 Ollama: running+model
 
 | Framework | Elapsed ms | Schema | Fallback | Status |
@@ -19,5 +19,8 @@ Ollama: running+model
 | python/maf-crew | 19565 | OK | no | OK |
 | python/haystack | 27018 | OK | no | OK |
 | python/dspy | 34500 | OK | no | OK |
+| dotnet/TopicResearchAgent | - | - | .NET SDK not installed | SKIP |
 | typescript/langgraph-js | 15743 | OK | no | OK |
 | typescript/openai-agents | 10619 | OK | no | OK |
+| java/google-adk | - | - | Maven not installed | SKIP |
+| java/langchain4j | - | - | Maven not installed | SKIP |

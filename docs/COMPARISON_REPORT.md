@@ -49,7 +49,28 @@
 ## 5. 复现
 
 ```powershell
-.\scripts\run-all-smoke.ps1
+. .\scripts\setup-ollama.ps1
+.\scripts\check-ollama.ps1
+.\scripts\run-smoke-live.ps1
+.\scripts\update-matrix-from-smoke.ps1
 ```
 
-结果写入 `docs/benchmarks.md`。
+结果写入 `docs/smoke-log.txt`、`docs/benchmarks.md`。
+
+## 6. 项目交付状态
+
+| 项 | 值 |
+|----|-----|
+| Live smoke 日期 | 2026-05-24 |
+| 模型 | `nemotron-3-super:cloud` |
+| OK | 14（Python 13 + TypeScript 2） |
+| SKIP | 3（dotnet、java/langchain4j、java/google-adk） |
+| 策略 | 不下载模型/工具链；仅用 Ollama |
+
+完整说明见 [PROJECT_STATUS.md](./PROJECT_STATUS.md)。
+
+### CI 与本地 benchmark
+
+- **GitHub Actions**（`.github/workflows/smoke.yml`）：依赖安装 + 少量 demo 冒烟，无 Ollama，允许 fallback。
+- **本地 `run-smoke-live.ps1`**：权威 benchmark（Ollama 真连 + JSON schema 校验）。
+
